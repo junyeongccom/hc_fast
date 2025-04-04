@@ -1,4 +1,3 @@
-
 services:
   db:
     build:
@@ -14,7 +13,6 @@ services:
     ports:
       - "5432:5432"
     restart: always
-
   web:
     build:
       context: .
@@ -28,14 +26,12 @@ services:
     env_file:
       - .env
     restart: always
-
   redis:
     image: redis:7
     container_name: redis_cache
     ports:
       - "6379:6379"
     restart: always
-
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -47,6 +43,5 @@ services:
     depends_on:
       - db
     restart: always
-
 volumes:
   pgdata:

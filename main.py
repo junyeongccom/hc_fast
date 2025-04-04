@@ -1,5 +1,6 @@
 import os
 import uvicorn
+import asyncpg
 from fastapi import FastAPI
 from datetime import datetime
 from fastapi.responses import HTMLResponse
@@ -21,6 +22,19 @@ async def home():
 </div>
 </body>
 """)
+
+@app.get("/crawl/result")
+async def get_crawl_result():
+    conn = await asyncpg.connect(
+        user='myuser',
+        password='mypassword',
+        database='mydatabase',
+        host='hc_postgres',
+        port=5432
+    )
+    rows = await conn.fetch("SELECT * FROM crawl_results ORDER BY id DESC LIMIT 10")
+    await conn.close()
+    return [{"id": r["id"], "message": r["message"]} for r in rows]
 
 if __name__ == "__main__":
 
